@@ -3,20 +3,42 @@ package main
 import (
 	"net/http"
 
+	"employee-api/config"
+	"employee-api/database"
+	"employee-api/logger"
 	"employee-api/routes"
-        "employee-api/config"
-        "employee-api/logger"
 )
 
 func main() {
 
+	cfg := config.Load()
+
+	err := database.Connect(
+		cfg.DBHost,
+		cfg.DBPort,
+		cfg.DBUser,
+		cfg.DBPassword,
+		cfg.DBName,
+	)
+	if err != nil {
+		logger.Error("Failed to connect to database: " + err.Error())
+		return
+	}
+
+	defer database.DB.Close()
+
+	err = database.CreateTable()
+	if err != nil {
+		logger.Error("Failed to create employees table: " + err.Error())
+		return
+	}
+
 	router := routes.SetupRouter()
-        cfg := config.Load()
 
-        logger.Info("Server started on part " + cfg.Port)
+	logger.Info("Starting server on port " + cfg.Port)
 
-        err := http.ListenAndServe(":"+cfg.Port, router)
-        if err != nil {
-	   logger.Error(err.Error())
-        }
+	err = http.ListenAndServe(":"+cfg.Port, router)
+	if err != nil {
+		logger.Error("Server failed to start: " + err.Error())
+	}
 }

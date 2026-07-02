@@ -1,66 +1,132 @@
 package services
 
 import (
+	"employee-api/database"
 	"employee-api/models"
-	"employee-api/storage"
 )
 
 func GetAllEmployees() []models.Employee {
-	return storage.Employees
+
+	rows, err := database.DB.Query(
+		"SELECT id, name, email, department FROM employees ORDER BY id",
+	)
+	if err != nil {
+		return []models.Employee{}
+	}
+	defer rows.Close()
+
+	var employees []models.Employee
+
+	for rows.Next() {
+		var employee models.Employee
+
+		err := rows.Scan(
+			&employee.ID,
+			&employee.Name,
+			&employee.Email,
+			&employee.Department,
+		)
+		if err != nil {
+			continue
+		}
+
+		employees = append(employees, employee)
+	}
+
+	return employees
 }
 
 func CreateEmployee(employee models.Employee) models.Employee {
 
-	employee.ID = len(storage.Employees) + 1
+	query := `
+	INSERT INTO employees(name, email, department)
+	VALUES($1, $2, $3)
+	RETURNING id
+	`
 
-	storage.Employees = append(storage.Employees, employee)
+	err := database.DB.QueryRow(
+		query,
+		employee.Name,
+		employee.Email,
+		employee.Department,
+	).Scan(&employee.ID)
+
+	if err != nil {
+		return models.Employee{}
+	}
 
 	return employee
 }
 
 func GetEmployeeByID(id int) (*models.Employee, bool) {
 
-	for _, employee := range storage.Employees {
+	var employee models.Employee
 
-		if employee.ID == id {
-			return &employee, true
-		}
+	query := `
+	SELECT id, name, email, department
+	FROM employees
+	WHERE id = $1
+	`
+
+	err := database.DB.QueryRow(query, id).Scan(
+		&employee.ID,
+		&employee.Name,
+		&employee.Email,
+		&employee.Department,
+	)
+
+	if err != nil {
+		return nil, false
 	}
 
-	return nil, false
+	return &employee, true
 }
 
-func UpdateEmployee(id int, updatedEmployee models.Employee) (*models.Employee, bool) {
+func UpdateEmployee(id int, employee models.Employee) (*models.Employee, bool) {
 
-	for index, employee := range storage.Employees {
+	query := `
+	UPDATE employees
+	SET name = $1,
+	    email = $2,
+	    department = $3
+	WHERE id = $4
+	`
 
-		if employee.ID == id {
+	result, err := database.DB.Exec(
+		query,
+		employee.Name,
+		employee.Email,
+		employee.Department,
+		id,
+	)
 
-			updatedEmployee.ID = id
-
-			storage.Employees[index] = updatedEmployee
-
-			return &storage.Employees[index], true
-		}
+	if err != nil {
+		return nil, false
 	}
 
-	return nil, false
+	rows, _ := result.RowsAffected()
+
+	if rows == 0 {
+		return nil, false
+	}
+
+	employee.ID = id
+
+	return &employee, true
 }
 
 func DeleteEmployee(id int) bool {
 
-	for index, employee := range storage.Employees {
+	result, err := database.DB.Exec(
+		"DELETE FROM employees WHERE id = $1",
+		id,
+	)
 
-		if employee.ID == id {
-
-			storage.Employees = append(
-				storage.Employees[:index],
-				storage.Employees[index+1:]...,
-			)
-
-			return true
-		}
+	if err != nil {
+		return false
 	}
 
-	return false
+	rows, _ := result.RowsAffected()
+
+	return rows > 0
 }
