@@ -7,7 +7,7 @@ import (
 
 	"employee-api/models"
 	"employee-api/services"
-
+        "employee-api/logger"
 	"github.com/gorilla/mux"
 )
 
@@ -36,6 +36,7 @@ func CreateEmployee(w http.ResponseWriter, r *http.Request) {
 
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(createdEmployee)
+        logger.Info("Employee Created")
 }
 
 func GetEmployeeByID(w http.ResponseWriter, r *http.Request) {

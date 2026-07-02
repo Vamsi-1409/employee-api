@@ -1,17 +1,22 @@
 package main
 
 import (
-	"log"
 	"net/http"
 
 	"employee-api/routes"
+        "employee-api/config"
+        "employee-api/logger"
 )
 
 func main() {
 
 	router := routes.SetupRouter()
+        cfg := config.Load()
 
-	log.Println("Server started on :8080")
+        logger.Info("Server started on part " + cfg.Port)
 
-	log.Fatal(http.ListenAndServe(":8080", router))
+        err := http.ListenAndServe(":"+cfg.Port, router)
+        if err != nil {
+	   logger.Error(err.Error())
+        }
 }
