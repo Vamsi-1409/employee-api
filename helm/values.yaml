@@ -1,0 +1,40 @@
+namespace: go-web-app
+
+replicaCount: 2
+
+image:
+  repository: vamsi1409/go-web-app
+  tag: v1
+  pullPolicy: IfNotPresent
+
+service:
+  type: ClusterIP
+  port: 8080
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 250m
+    memory: 256Mi
+
+config:
+  PORT: "8080"
+  DB_HOST: postgres-service
+  DB_PORT: "5432"
+  DB_NAME: employee_db
+
+secret:
+  DB_USER: postgres
+  DB_PASSWORD: postgres
+
+postgres:
+  image: postgres:16
+  port: 5432
+  replicaCount: 1
+
+ingress:
+  enabled: true
+  className: nginx
+  path: /
