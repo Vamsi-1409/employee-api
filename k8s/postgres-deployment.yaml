@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: go-web-app
+spec:
+  replicas: 1
+
+  selector:
+    matchLabels:
+      app: postgres
+
+  template:
+    metadata:
+      labels:
+        app: postgres
+
+    spec:
+      containers:
+      - name: postgres
+        image: postgres:16
+
+        ports:
+        - containerPort: 5432
+
+        env:
+        - name: POSTGRES_DB
+          valueFrom:
+            configMapKeyRef:
+              name: webapp-config
+              key: DB_NAME
+
+        - name: POSTGRES_USER
+          valueFrom:
+            secretKeyRef:
+              name: webapp-secret
+              key: DB_USER
+
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: webapp-secret
+              key: DB_PASSWORD
