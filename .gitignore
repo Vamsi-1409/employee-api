@@ -1,18 +1,85 @@
-# Binaries
-employee-api
-*.exe
-
+# ==========================
 # Go
+# ==========================
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
 *.test
 *.out
-vendor/
 
+# Build binaries
+main
+employee-api
+bin/
+dist/
+
+# Coverage
+coverage.out
+*.coverprofile
+
+# ==========================
+# Environment Files
+# ==========================
+.env
+.env.*
+!.env.example
+
+# ==========================
+# Logs
+# ==========================
+*.log
+logs/
+
+# ==========================
 # IDE
+# ==========================
 .vscode/
 .idea/
 
+# ==========================
 # macOS
+# ==========================
 .DS_Store
 
-# Environment
-.env
+# ==========================
+# Git
+# ==========================
+.gitignore
+
+# ==========================
+# Terraform
+# (Future)
+# ==========================
+.terraform/
+*.tfstate
+*.tfstate.*
+crash.log
+
+# ==========================
+# Kubernetes
+# ==========================
+*.kubeconfig
+
+# ==========================
+# Helm
+# ==========================
+*.tgz
+
+# ==========================
+# Docker
+# ==========================
+docker-compose.override.yml
+
+# ==========================
+# Temporary Files
+# ==========================
+tmp/
+temp/
+.cache/
+
+# ==========================
+# OS Files
+# ==========================
+Thumbs.db
