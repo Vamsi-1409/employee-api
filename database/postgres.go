@@ -9,7 +9,7 @@ import (
 
 var DB *sql.DB
 
-func Connect(host, port, user, password, dbname string) error {
+func Connect(host, port, user, password, dbname string, sslmode string) error {
 
 	sslMode := getEnv("DB_SSLMODE", "require")
 
