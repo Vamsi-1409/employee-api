@@ -4,7 +4,7 @@ replicaCount: 2
 
 image:
   repository: 814636798023.dkr.ecr.ap-south-2.amazonaws.com/employee-api
-  tag: "63ca8aad7d20c1ec8b4a3e259870b3c8e6e1cdbf"
+  tag: "7cfe93f6dbd87f06baabdc161427b425af9f3fb5"
   pullPolicy: IfNotPresent
 
 service:
