@@ -1,0 +1,43 @@
+name: Continuous Deployment
+
+on:
+  workflow_run:
+    workflows: ["Continuous Integration"]
+    types:
+      - completed
+
+permissions:
+  contents: write
+
+jobs:
+  update-helm:
+    if: >
+      github.event.workflow_run.conclusion == 'success' &&
+      github.event.workflow_run.head_branch == 'main'
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update Helm Image Tag
+        run: |
+          NEW_TAG=${{ github.event.workflow_run.head_sha }}
+          echo "Updating image tag to $NEW_TAG"
+
+          sed -i "s/tag: \".*\"/tag: \"$NEW_TAG\"/" helm/values.yaml
+
+      - name: Commit Changes
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+
+          git add helm/values.yaml
+
+          git diff --cached --quiet || git commit -m "Update image tag to ${{ github.event.workflow_run.head_sha }}"
+
+          git push
