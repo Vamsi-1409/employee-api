@@ -21,13 +21,13 @@ resources:
 
 config:
   PORT: "8080"
-  DB_HOST: postgres-service
+  DB_HOST: employee-api-db.c1awosg0a7it.ap-south-2.rds.amazonaws.com
   DB_PORT: "5432"
-  DB_NAME: employee_db
+  DB_NAME: postgres
 
 secret:
   DB_USER: postgres
-  DB_PASSWORD: postgres
+  DB_PASSWORD: Postgres123
 
 postgres:
   image: postgres:16
