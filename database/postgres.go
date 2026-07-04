@@ -18,7 +18,11 @@ func Connect(host, port, user, password, dbname string, sslmode string) error {
 		user,
 		password,
 		dbname,
+<<<<<<< HEAD
 		sslmode,
+=======
+		dbsslmode,
+>>>>>>> origin/feature/rds-ssl
 	)
 
 	db, err := sql.Open("postgres", connStr)
