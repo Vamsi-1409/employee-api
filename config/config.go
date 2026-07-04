@@ -10,6 +10,7 @@ type Config struct {
 	DBPassword string
 	DBName     string
 	JWTSecret  string
+        DBSSLMode  string
 }
 
 func Load() Config {
@@ -21,8 +22,9 @@ func Load() Config {
 		DBPort:     getEnv("DB_PORT", "5432"),
 		DBUser:     getEnv("DB_USER", "postgres"),
 		DBPassword: getEnv("DB_PASSWORD", "postgres"),
-		DBName:     getEnv("DB_NAME", "employee_db"),
+		DBName:     getEnv("DB_NAME", "postgres"),
 		JWTSecret:  getEnv("JWT_SECRET", "my-secret-key"),
+                DBSSLMode: getEnv("DB_SSLMODE", "require"),
 	}
 }
 

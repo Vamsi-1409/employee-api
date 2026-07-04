@@ -24,6 +24,7 @@ config:
   DB_HOST: employee-api-db.c1awosg0a7it.ap-south-2.rds.amazonaws.com
   DB_PORT: "5432"
   DB_NAME: postgres
+  DB_SSLMODE: require
 
 secret:
   DB_USER: postgres
