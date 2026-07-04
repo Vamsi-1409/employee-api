@@ -11,8 +11,6 @@ var DB *sql.DB
 
 func Connect(host, port, user, password, dbname string) error {
 
-        sslMode := getEnv("DB_SSLMODE", "require")
-
 	connStr := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		host,
