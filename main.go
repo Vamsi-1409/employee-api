@@ -19,7 +19,7 @@ func main() {
 		cfg.DBUser,
 		cfg.DBPassword,
 		cfg.DBName,
-		cfg.DBSSLMODE,
+		cfg.DBSSLMode,
 	)
 	if err != nil {
 		logger.Error("Failed to connect to database: " + err.Error())
