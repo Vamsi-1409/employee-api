@@ -11,8 +11,6 @@ var DB *sql.DB
 
 func Connect(host, port, user, password, dbname string, sslmode string) error {
 
-#	sslMode := getEnv("DB_SSLMODE", "require")
-
 	connStr := fmt.Sprintf(
 		"host=%s port=%s user=%s password=%s dbname=%s sslmode=%s",
 		host,
@@ -20,6 +18,7 @@ func Connect(host, port, user, password, dbname string, sslmode string) error {
 		user,
 		password,
 		dbname,
+		sslmode,
 	)
 
 	db, err := sql.Open("postgres", connStr)
