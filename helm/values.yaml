@@ -3,8 +3,8 @@ namespace: go-web-app
 replicaCount: 2
 
 image:
-  repository: vamsi1409/go-web-app
-  tag: v1
+  repository: 814636798023.dkr.ecr.ap-south-2.amazonaws.com/employee-api
+  tag: "v2"
   pullPolicy: IfNotPresent
 
 service:
