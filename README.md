@@ -1,168 +1,303 @@
-# Employee API - Go + Kubernetes + DevOps Project
+# 🚀 Employee API - Cloud Native DevOps Project
 
-A cloud-native Employee Management REST API built with Go and deployed using modern DevOps practices.
+A production-inspired **Go REST API** deployed on **Amazon EKS** using **Kubernetes**, **Helm**, **GitHub Actions**, and **Argo CD** following **GitOps** principles.
 
-## Project Overview
-
-This project demonstrates an end-to-end DevOps workflow, starting from application development to Kubernetes deployment and CI/CD automation.
-
-The application exposes REST APIs to manage employee records and uses PostgreSQL as the backend database.
+The project demonstrates a complete CI/CD pipeline that automatically builds, tests, containerizes, publishes, and deploys application changes to Kubernetes.
 
 ---
 
-## Tech Stack
+## ✨ Key Features
 
-### Backend
-- Go (Golang)
-- Gorilla Mux
-- PostgreSQL
-
-### Containerization
-- Docker
-- Docker Compose
-
-### Orchestration
-- Kubernetes
-- Helm
-
-### DevOps (In Progress)
-- GitHub Actions
-- Amazon ECR
-- Amazon EKS
-- Argo CD
-- Prometheus
-- Grafana
+* RESTful API built with Go
+* PostgreSQL database integration
+* Dockerized application
+* Kubernetes deployment using Helm
+* GitHub Actions CI/CD
+* Amazon ECR for container registry
+* Amazon EKS for Kubernetes orchestration
+* Argo CD for GitOps-based deployment
+* Automated image versioning using Git commit SHA
+* Health checks with Kubernetes probes
+* ConfigMaps and Secrets for configuration management
+* Ingress for external access
 
 ---
 
-## Project Structure
+# 🏗️ Solution Architecture
 
-```text
-employee-api/
-│
-├── config/
-├── database/
-├── handlers/
-├── logger/
-├── models/
-├── routes/
-├── services/
-├── helm/
-├── k8s/
-├── Dockerfile
-├── docker-compose.yml
-├── go.mod
-├── go.sum
-└── main.go
+```text id="0ow9p7"
+                     Developer
+                         │
+              Feature Branch Development
+                         │
+                         ▼
+                  Pull Request Review
+                         │
+                         ▼
+                    Merge to main
+                         │
+                         ▼
+                GitHub Actions (CI)
+         ┌────────────────────────────────┐
+         │ • Go Format                    │
+         │ • Go Vet                       │
+         │ • Unit Tests                   │
+         │ • Build Binary                 │
+         │ • Build Docker Image           │
+         │ • Push Image to Amazon ECR     │
+         └────────────────────────────────┘
+                         │
+                         ▼
+               GitHub Actions (CD)
+         ┌────────────────────────────────┐
+         │ Update Helm Image Tag          │
+         │ Commit values.yaml             │
+         └────────────────────────────────┘
+                         │
+                         ▼
+                     Git Repository
+                         │
+                         ▼
+                      Argo CD
+                         │
+                         ▼
+                       Helm
+                         │
+                         ▼
+                  Amazon EKS Cluster
+                         │
+          ┌──────────────┴──────────────┐
+          │                             │
+          ▼                             ▼
+     Employee API                 PostgreSQL
 ```
 
 ---
 
-## Features
+# ⚙️ Technology Stack
 
-- REST API
-- CRUD Operations
-- PostgreSQL Integration
-- Configuration using Environment Variables
-- Health Check Endpoint
-- Dockerized Application
-- Kubernetes Deployment
-- Helm Chart
-- ConfigMaps and Secrets
-- Liveness & Readiness Probes
-
----
-
-## API Endpoints
-
-| Method | Endpoint | Description |
-|---------|----------|-------------|
-| GET | /health | Health Check |
-| GET | /employees | Get All Employees |
-| GET | /employees/{id} | Get Employee by ID |
-| POST | /employees | Create Employee |
-| PUT | /employees/{id} | Update Employee |
-| DELETE | /employees/{id} | Delete Employee |
+| Category           | Technologies   |
+| ------------------ | -------------- |
+| Language           | Go             |
+| Database           | PostgreSQL     |
+| Containerization   | Docker         |
+| Orchestration      | Kubernetes     |
+| Package Manager    | Helm           |
+| CI/CD              | GitHub Actions |
+| GitOps             | Argo CD        |
+| Cloud              | AWS            |
+| Container Registry | Amazon ECR     |
+| Kubernetes Service | Amazon EKS     |
+| Version Control    | Git & GitHub   |
 
 ---
 
-## Run Locally
+# 📁 Repository Structure
 
-### Clone Repository
+```text id="w4ojoc"
+employee-api
+│
+├── .github/
+│   └── workflows/
+│       ├── ci.yaml
+│       └── cd.yaml
+│
+├── argocd/
+│   └── application.yaml
+│
+├── helm/
+│   ├── templates/
+│   ├── Chart.yaml
+│   └── values.yaml
+│
+├── handlers/
+├── services/
+├── routes/
+├── models/
+├── database/
+├── config/
+├── logger/
+│
+├── Dockerfile
+├── docker-compose.yml
+├── go.mod
+├── main.go
+└── README.md
+```
 
-```bash
+---
+
+# 🔄 CI/CD Workflow
+
+## Continuous Integration
+
+Every Pull Request and push to the `main` branch triggers the CI pipeline.
+
+The pipeline performs:
+
+* Repository checkout
+* Go environment setup
+* Dependency download
+* Code formatting validation
+* Static code analysis (`go vet`)
+* Unit testing
+* Application build
+* Multi-platform Docker image build
+* Push Docker image to Amazon ECR
+
+---
+
+## Continuous Deployment
+
+After a successful CI pipeline:
+
+* The latest Docker image is pushed to Amazon ECR.
+* The Helm chart (`values.yaml`) is updated with the new Git commit SHA.
+* The update is committed back to the repository.
+* Argo CD detects the change.
+* Kubernetes is synchronized automatically.
+* The application is updated without manual intervention.
+
+---
+
+# 🔁 GitOps Workflow
+
+```text id="ixw6nm"
+Code Change
+      │
+      ▼
+Feature Branch
+      │
+      ▼
+Pull Request
+      │
+      ▼
+Merge to Main
+      │
+      ▼
+GitHub Actions (CI)
+      │
+      ▼
+Docker Image → Amazon ECR
+      │
+      ▼
+GitHub Actions (CD)
+      │
+      ▼
+Update Helm values.yaml
+      │
+      ▼
+Git Commit
+      │
+      ▼
+Argo CD Sync
+      │
+      ▼
+Amazon EKS Deployment
+```
+
+---
+
+# 🚀 Running the Application
+
+### Clone the Repository
+
+```bash id="g9m4ef"
 git clone https://github.com/Vamsi-1409/employee-api.git
 cd employee-api
 ```
 
-### Start PostgreSQL
+### Run Locally
 
-```bash
-docker compose up -d postgres
-```
-
-### Run Application
-
-```bash
-go run .
-```
-
-The application will start on:
-
-```
-http://localhost:8080
+```bash id="9hxfzs"
+go mod download
+go run main.go
 ```
 
 ---
 
-## Build Docker Image
+# 🐳 Docker
 
-```bash
+Build the image
+
+```bash id="k3zhbj"
 docker build -t employee-api .
 ```
 
-Run the container:
+Run the container
 
-```bash
+```bash id="1jlwmg"
 docker run -p 8080:8080 employee-api
 ```
 
 ---
 
-## Deploy to Kubernetes
+# ☸️ Kubernetes Deployment
 
-Apply Kubernetes manifests:
+Deploy using Helm
 
-```bash
-kubectl apply -f k8s/
+```bash id="4mb9gc"
+cd helm
+
+helm install employee-api .
 ```
 
-Or deploy using Helm:
+Upgrade
 
-```bash
-helm install employee-api helm/go-web-app
+```bash id="7l0zzy"
+helm upgrade employee-api .
 ```
 
 ---
 
-## CI/CD Roadmap
+# 📦 Kubernetes Resources
 
-- ✅ Go REST API
-- ✅ Docker
-- ✅ Docker Compose
-- ✅ Kubernetes
-- ✅ Helm
-- 🚧 GitHub Actions
-- 🚧 Amazon ECR
-- 🚧 Amazon EKS
-- 🚧 Argo CD
-- 🚧 Prometheus
-- 🚧 Grafana
+The Helm chart deploys:
+
+* Namespace
+* Employee API Deployment
+* PostgreSQL Deployment
+* Services
+* ConfigMap
+* Secret
+* Ingress
 
 ---
 
-## Author
+# 📈 Project Highlights
+
+* End-to-end DevOps implementation
+* GitOps deployment strategy
+* Immutable Docker image versioning
+* Multi-architecture image builds
+* Infrastructure deployed on Amazon EKS
+* Automated deployment with Argo CD
+* Kubernetes best practices
+* Clean repository structure
+* Feature branch development workflow
+* Pull Request-based delivery process
+
+---
+
+# 🛣️ Future Enhancements
+
+* Terraform for Infrastructure as Code
+* Prometheus & Grafana monitoring
+* Loki-based centralized logging
+* AWS Secrets Manager integration
+* PostgreSQL StatefulSet with Persistent Volumes
+* Horizontal Pod Autoscaler (HPA)
+* Trivy image scanning
+* SonarQube code quality analysis
+* Slack deployment notifications
+
+---
+
+# 👨‍💻 Author
 
 **Vamsi Krishna**
 
-GitHub: https://github.com/Vamsi-1409
+DevOps Engineer passionate about Cloud, Kubernetes, CI/CD, and GitOps.
+
+GitHub: https://github.com/Vamsi-1409/employee-api
+
