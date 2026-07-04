@@ -10,7 +10,7 @@ type Config struct {
 	DBPassword string
 	DBName     string
 	JWTSecret  string
-        DBSSLMode  string
+	DBSSLMode  string
 }
 
 func Load() Config {
@@ -24,7 +24,7 @@ func Load() Config {
 		DBPassword: getEnv("DB_PASSWORD", "postgres"),
 		DBName:     getEnv("DB_NAME", "postgres"),
 		JWTSecret:  getEnv("JWT_SECRET", "my-secret-key"),
-                DBSSLMode: getEnv("DB_SSLMODE", "require"),
+		DBSSLMode:  getEnv("DB_SSLMODE", "require"),
 	}
 }
 
